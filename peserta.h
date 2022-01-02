@@ -17,7 +17,7 @@ typedef struct peserta infotypePeserta;
 
 struct peserta{
     string noPeserta, namaPeserta, emailPeserta, noTelpPeserta;
-    int noKursi;
+    string noKursi;
     string jenisPeserta;
 };
 
@@ -33,15 +33,17 @@ struct listPeserta{
 };
 
 void createListPeserta(listPeserta &L);
-adrEvent findPeserta(listPeserta L, string cariNamaPeserta);
-adrPeserta findLastRegular(listPeserta L);
+adrPeserta findPeserta(listPeserta L, string cariNamaPeserta);
+adrPeserta findFirstWaitingList(listPeserta L);
 adrPeserta newElmPeserta(infotypePeserta input);
 infotypePeserta createPeserta();
 void insertLastPeserta(listPeserta &L, adrPeserta P);
-void insertAfterPeserta(adrPeserta prec, adrPeserta P);
 void deleteFirstPeserta(listPeserta &L, adrPeserta &P);
 void deleteLastPeserta(listPeserta &L, adrPeserta &P);
 void deleteAfterPeserta(adrPeserta prec, adrPeserta &P);
-void deletePesertaMaster(listPeserta &L, adrPeserta &P);
+void deletePeserta(listPeserta &L, string namaPeserta, adrPeserta &Q);
+void showListPeserta(listPeserta L);
+
+
 
 #endif // PESERTA_H_INCLUDED

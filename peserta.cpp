@@ -16,7 +16,7 @@ adrPeserta findPeserta(listPeserta L, string cariNamaPeserta){
 **/
     adrPeserta P = first(L);
     while (P != nil){
-        if info(P).namaPeserta = cariNamaPeserta{
+        if (info(P).namaPeserta == cariNamaPeserta){
             return P;
         }
         P = next(P);
@@ -24,36 +24,19 @@ adrPeserta findPeserta(listPeserta L, string cariNamaPeserta){
     return nil;
 }
 
-/**
 adrPeserta findFirstWaitingList(listPeserta L){
-
     //[Berguna untuk sistem waiting list]
     //Mengembalikan pointer alamat adrPeserta apabila ditemukan seorang peserta pertama dengan jenis "waiting_list"
 
     adrPeserta P = first(L);
     while (P != nil){
         //pencarian dari depan mencari waiting list pertama
-        if (info(P).jenisPeserta = "waiting_list"){
+        if (info(P).jenisPeserta == "waiting_list"){
             return P;
         }
         P = next(P);
     }
     return nil;
-}
-**/
-
-adrPeserta findLastRegular(listPeserta L){
-/**
-    [Berguna untuk sistem waiting list]
-    Mengembalikan pointer alamat adrPeserta terakhir yang berjenis "reguler" apabila terdapat peserta dengan jenis "waiting_list"
-**/
-    P = findFirstWaitingList(L);
-    if (P != nil){
-        return prev(P);
-    }else{
-        return nil;
-    }
-
 }
 
 infotypePeserta createPeserta(){
@@ -65,7 +48,6 @@ infotypePeserta createPeserta(){
     string namaPeserta;
     string emailPeserta;
     string noTelpPeserta;
-    int noKursi;
 
     //menginput data peserta baru
     cout<<"Masukkan nomor peserta: ";
@@ -103,8 +85,8 @@ void insertLastPeserta(listPeserta &L, adrPeserta P){
     F.S. seorang peserta P telah ditambahkan setelah elemen terakhir apabila peserta tsb belum ada di dalam list
          dan mengeluarkan pesan "peserta sudah ada dalam list (terdaftar)" apabila peserta sudah ada dalam list
 **/
-    if (findPeserta(L) != nil){
-        //Peserta ada dalam list
+    if (findPeserta(L,info(P).namaPeserta) == nil){
+        //Peserta tidak ada dalam list
         if (first(L) == nil && last(L) == nil){
             //listPeserta dalam keadaan kosong
             first(L) = P;
@@ -164,19 +146,40 @@ void deleteAfterPeserta(adrPeserta prec, adrPeserta &P){
     next(prec) = next(P);
     prev(next(P)) = prec;
     prev(P) = nil;
-    next(P) nil;
+    next(P) = nil;
 }
 
-void deletePesertaMaster(listPeserta &L, adrEvent P, string namaPeserta, adrPeserta &Q){
-/** I.S. terdefinisi sebuah listPeserta L dan namaPeserta yang akan dihapus
-    F.S. peserta dengan namaPeserta telah dihapus dari list
+void deletePeserta(listPeserta &L, string namaPeserta, adrPeserta &Q){
+/** I.S. terdefinisi sebuah listPeserta L,mungkin kosong dan nama peserta yang akan dihapus dari list
+    F.S. peserta dengan nama peserta namaPeserta sudah terhapus dari list
 **/
-    Q = first(peserta(P))
-    while (P != nil){
-        if(info(first(peserta(P))).namaPeserta == namaPeserta){
-            deleteFirstPeserta(&L,)
+
+    if (info(first(L)).namaPeserta == namaPeserta){
+        deleteFirstPeserta(L,Q);
+    }else if (info(last(L)).namaPeserta == namaPeserta){
+        deleteLastPeserta(L,Q);
+    }else{
+        adrPeserta R = first(L);
+        while (info(next(R)).namaPeserta != namaPeserta){
+            R = next(R);
         }
+        deleteAfterPeserta(R,Q);
     }
 }
+
+void showListPeserta(listPeserta L){
+    adrPeserta P = first(L);
+    if (P != nil){
+        while (P != nil){
+            cout<<info(P).namaPeserta<<endl;
+            P = next(P);
+        }
+    }else{
+        cout<<"List peserta kosong"<<endl;
+    }
+    cout<<endl;
+}
+
+
 
 
