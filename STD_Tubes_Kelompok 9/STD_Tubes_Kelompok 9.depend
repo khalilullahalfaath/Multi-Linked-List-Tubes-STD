@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1641147490 source:e:\kuliah\semester 3\strukturdata\0. tubes\fix\std_tubes_kelompok 9\main.cpp
+	<iostream>
+	<stdlib.h>
+	<conio.h>
+	"event.h"
+	"peserta.h"
+
+1641147308 source:e:\kuliah\semester 3\strukturdata\0. tubes\fix\std_tubes_kelompok 9\event.cpp
+	"event.h"
+
+1641147223 e:\kuliah\semester 3\strukturdata\0. tubes\fix\std_tubes_kelompok 9\event.h
+	<iostream>
+	"peserta.h"
+
+1641146916 e:\kuliah\semester 3\strukturdata\0. tubes\fix\std_tubes_kelompok 9\peserta.h
+	<iostream>
+
+1641129812 source:e:\kuliah\semester 3\strukturdata\0. tubes\fix\std_tubes_kelompok 9\peserta.cpp
+	"peserta.h"
+
