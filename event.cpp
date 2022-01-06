@@ -14,15 +14,18 @@ adrEvent findEvent(listEvent L, string cariNamaEvent){
     Mengembalikan alamat adrEvent dengan namaEvent = cariNamaEvent
     dan mengembalikan nil apabila tidak ditemukan sebuah event dengan namaEvent = cariNamaEvent
 **/
-    adrEvent P = first(L);
+    adrEvent P = first(L); //assign P dengan first(L)
+   
     //Mengecek berulang sampai akhir listEvent
     while (P != nil){
         //Apabila didapat sebuah event dengan namaEvent = cariNamaEvent akan return alamat event tersebut
         if (info(P).namaEvent == cariNamaEvent){
             return P;
         }
+        
         P = next(P);
     }
+    
     //List sudah dicek semuanya, return NULL
     return nil;
 }
@@ -61,9 +64,11 @@ adrEvent newElmEvent(infotypeEvent input){
 **/
     //Alokasi P bertipe adrEvent
     adrEvent P = new elmEvent;
+    
     prev(P) = nil;
     next(P) = nil;
     info(P) = input;
+    
     //Setiap event memuat satu listPeserta yang merupakan peserta dari event tersebut
     createListPeserta(peserta(P));
 
@@ -80,16 +85,19 @@ void insertLastEvent(listEvent &L, adrEvent P){
     //Mengecek apakah event dengan nama event namaEvent ada dalam listEvent
     if (findEvent(L,info(P).namaEvent) == nil){
         //Event tidak ada dalam list
+        
         if (first(L) == nil && last(L) == nil){
             //listEvent dalam keadaan kosong
             first(L) = P;
             last(L) = P;
+            
         }else{
             //listEvent tidak kosong
             prev(P) = last(L);
             next(last(L)) = P;
             last(L) = P;
         }
+        
     }else{
         //Event ada dalam list
         cout<<"Event sudah ada dalam list. Tidak perlu ditambahkan lagi."<<endl;
@@ -103,13 +111,18 @@ void deleteFirstEvent(listEvent &L, adrEvent &Q){
     Q = first(L);
     if(first(L) == nil && last(L) == nil){
         //listEvent kosong
+        
         cout<<"Tidak ada event untuk dihapus (list kosong)"<<endl;
+        
     }else if (first(L) == last(L)){
         //listEvent hanya ada satu elemen
+        
         first(L) = nil;
         last(L) = nil;
+        
     }else{
         //ListEvent punya lebih dari satu elemen
+        
         first(L) = next(Q);
         next(Q) = nil;
         prev(first(L)) = nil;
@@ -124,10 +137,12 @@ void deletelastEvent(listEvent &L, adrEvent &Q){
     if(first(L) == nil && last(L) == nil){
         //listEvent kosong
         cout<<"Tidak ada event untuk dihapus (list kosong)"<<endl;
+        
     }else if (first(L) == last(L)){
         //listEvent hanya ada satu elemen
         first(L) = nil;
         last(L) = nil;
+        
     }else{
         //listEvent punya lebih dari satu elemen
         last(L) = prev(Q);
@@ -155,12 +170,15 @@ void deleteEventMaster(listEvent &L, string namaEvent, adrEvent &Q){
     Q = findEvent(L,namaEvent);
     if (Q != nil){
         //Event ditemukan di dalam listEvent
+        
         if (info(first(L)).namaEvent == namaEvent){
             //Event yang ingin dihapus merupakan elemen pertama dalam list
             deleteFirstEvent(L,Q);
+            
         }else if(info(last(L)).namaEvent == namaEvent){
             //Event yang ingin dihapus merupakan elemen terakhir dalam list
             deletelastEvent(L,Q);
+            
         }else{
             //Event yang ingin dihapus bukan elemen pertama atau terakhir dari list.
             adrEvent R = first(L);
@@ -168,8 +186,10 @@ void deleteEventMaster(listEvent &L, string namaEvent, adrEvent &Q){
                 //Mencari elemen dengan elemen setelahnya merupakan event yang ingin dihapus
                 R = next(R);
             }
+            
             deleteAfterEvent(R,Q);
         }
+        
     }else{
         cout<<"Event belum terdaftar !";
     }
@@ -179,11 +199,13 @@ void showAllEventName(listEvent L){
 /** I.S. terdefinisi sebuah listEvent L
     F.S. semua namaEvent dari setiap event sudah ditampilkan. Apabila listEvent kosong, akan menampilkan pesan "Belum ada event untuk ditampilkan"
 **/
+    //P diassign first(L)
     adrEvent P = first(L);
     int i = 1;
     if (P != nil){
         //listEvent tidak kosong
         while (P != nil){
+            //Mengulang sampai semua event sudah ditampilkan 
             cout<<"["<<i<<"] ";
             cout<<info(P).namaEvent<<endl;
             P = next(P);
@@ -208,36 +230,53 @@ void joinEvent(listEvent &L, adrPeserta daftar){
     //Mengcopy info(daftar) ke dalam P
     adrPeserta P = newElmPeserta(info(daftar));
     cout<<"Berikut adalah event-event yang tersedia"<<endl;
-    showAllEventName(L);
+    showAllEventName(L); //Menampilkan nama dari setiap event yang teregistrasi
     cout<<endl;
+    
     string pilihan;
     cout<<"Peserta tersebut akan masuk ke event mana? (tulis nama eventnya): ";
     cin>>pilihan;
+    
+    //mencari event dengan namaEvent = pilihan
     adrEvent Q = findEvent(L,pilihan);
+    
     if (Q != nil){
         //event ditemukan dalam listEvent
         if (findPeserta(peserta(Q),info(P).namaPeserta) == nil){
             //peserta belum terdaftar dalam event tsb
+            
             if (info(Q).kuotaMaks <= info(Q).jumlahPeserta){
                 //kuotaMaks sudah tercapai
+                //peserta tsb berjenis "waiting_list"
                 info(P).jenisPeserta = "waiting_list";
+            
             }else{
                 //kuotaMaks belum tercapai
+                //Diminta untuk menginputkan no. kursi
+                //peserta tsb berjenis "reguler"
                 string noKursi;
+                
                 info(Q).jumlahPeserta = info(Q).jumlahPeserta + 1;
                 info(P).jenisPeserta = "reguler";
+                
                 cout<<"Masukkan nomor kursi: ";
                 cin>>noKursi;
+                
                 info(P).noKursi = noKursi;
             }
+            
+            //peserta masuk ke dalam event
             insertLastPeserta(peserta(Q),P);
             cout<<endl;
+            
             cout<<"Peserta sudah masuk ke dalam event"<<endl;
             cout<<"Status peserta adalah "<<info(P).jenisPeserta<<endl;
+        
         }else{
             //peserta sudah terdaftar di dalam event
             cout<<"Peserta sudah terdaftar dalam event tersebut!"<<endl;
         }
+    
     }else{
         //event tidak ditemukan dalam listEvent
         cout<<"event tersebut tidak ada. Buat event terlebih dahulu!"<<endl;
@@ -249,11 +288,13 @@ void showjumlahPesertasemuaEvent(listEvent L){
     F.S. semua nama event beserta jumlah pesertanya sudah ditampilkan.
          Menampilkan pesan "Tidak ada event untuk ditampilkan" apabila list kosong
 **/
-    adrEvent P = first(L);
-    int i = 1;
+    adrEvent P = first(L);   //assign P dengan first(L)
+    int i = 1;  //Penomoran
+    
     if (P != nil){
         //listEvent tidak kosong
         cout<<"Nama event | jumlah peserta "<<endl;
+        
         while (P != nil){
             //mengulang untuk semua event
             cout<<"["<<i<<"] ";
@@ -261,7 +302,9 @@ void showjumlahPesertasemuaEvent(listEvent L){
             cout<<info(P).jumlahPeserta<<endl;
             P = next(P);
             i++;
+            
         }
+    
     }else{
         //listEvent kosong
         cout<<"Tidak ada event untuk ditampilkan"<<endl;
@@ -270,14 +313,21 @@ void showjumlahPesertasemuaEvent(listEvent L){
 
 void showEventTersedia(listEvent L){
 /** I.S. terdefinisi sebuah listEvent L, mungkin kosong
-    F.S. semua nama event dengan jumlah peserta < kuotaMaks sudah ditampilkan. Apabila list kosong, akan menampilkan pesan "Tidak ada event untuk ditampilkan"
+    F.S. semua nama event dengan jumlah peserta < kuotaMaks sudah ditampilkan, beserta kuoata yang tersedia.
+         Apabila list kosong, akan menampilkan pesan "Tidak ada event untuk ditampilkan"
 **/
-    adrEvent P = first(L);
-    int i = 1;
+    adrEvent P = first(L); //assign P dengan first(L)
+    int i = 1; //penomoran
+    
     if (P != nil){
         //listEvent tidak kosong
+        
         while (P != nil){
+            //mengulang sampai semua event
+            
             if (info(P).kuotaMaks > info(P).jumlahPeserta){
+                //kuota maksimum belum terpenuhi
+                //Akan ditampilkan: namaEvent, jumlah peserta, kuota maksimal, dan kuota yang tersedia
                 cout<<"["<<i<<"] ";
                 cout<<info(P).namaEvent<<"| "<<endl;
                 cout<<"Jumlah peserta        = ";
@@ -288,59 +338,86 @@ void showEventTersedia(listEvent L){
                 cout<<info(P).kuotaMaks - info(P).jumlahPeserta<<endl;
                 cout<<endl;
             }
+            
             P = next(P);
             i++;
         }
+        
     }else{
         //listEvent kosong
         cout<<"Tidak ada event untuk ditampilkan"<<endl;
+        
     }
+    //Menampilkan pesan "sudah ditampilkan" untuk tidak membingungkan apabila tidak ada event yang kuotanya tersedia
     cout<<"Sudah ditampilkan"<<endl;
 }
 
 void deletePesertaEventTertentu(listEvent &events, string namaEvent, string namaPeserta, adrPeserta &Q){
-/** I.S. terdefinisi sebuah listPeserta L dan namaPeserta peserta event namaEvent yang akan dihapus
+/** I.S. terdefinisi sebuah listPeserta L dan nama peserta dan nama Event yang pesertanya tsb akan dihapus
     F.S. peserta dengan namaPeserta telah dihapus dari anggota peserta event yang ditunjuk
 **/
-    adrEvent P = findEvent(events,namaEvent);
+    adrEvent P = findEvent(events,namaEvent); //mencari event dengan namaEvent == namaEvent input
+    
     if(P != nil){
         //event ditemukan
-        Q = findPeserta(peserta(P),namaPeserta);
+        
+        Q = findPeserta(peserta(P),namaPeserta); //mencari peserta dengan namaPeserta = namaPeserta input di anggota peserta event
+        
         if (Q != nil){
             //peserta ditemukan. Akan dilakukan penghapusan sesuai posisi element
+            
             if (info(first(peserta(P))).namaPeserta == namaPeserta){
+                //elemen hapus merupakan elemen pertama
                 deleteFirstPeserta(peserta(P),Q);
+            
             }else if(info(last(peserta(P))).namaPeserta == namaPeserta){
+                //elemen hapus merupakan elemen terakhir
                 deleteLastPeserta(peserta(P),Q);
+            
             }else{
-                adrPeserta R = first(peserta(P));
+                adrPeserta R = first(peserta(P)); //assign R dengan first(peserta event)
+                
                 while(info(next(R)).namaPeserta != namaPeserta){
+                    //mengulang sampai ditemukan info(next(R)) = namaPeserta
                     R = next(R);
                 }
+                
+                //elemen hapus merupakan elemen setelah R
                 deleteAfterPeserta(R,Q);
             }
+            
             if (info(Q).jenisPeserta == "reguler"){
                 //peserta merupakan peserta reguler sehingga mempengaruhi jumlah peserta untuk event tsb
                 info(P).jumlahPeserta = info(P).jumlahPeserta - 1;
             }
+            
             if (info(P).jumlahPeserta < info(P).kuotaMaks){
                 //kuota maksimal event belum terpenuhi
+                
                 //Akan dicari peserta dengan waiting_list teratas
                 adrPeserta waiting = findFirstWaitingList(peserta(P));
+                
                 if (waiting != nil){
+                    //waiting_list teratas ditemukan dan akan menjadi peserta reguler
+                    //akan diinput no. kursinya
                     string noKursi;
                     info(waiting).jenisPeserta = "reguler";
                     cout<<"Waiting list teratas adalah "<<info(waiting).namaPeserta<<endl;
+                    
                     cout<<"Masukkan no. kursi peserta "<<info(waiting).namaPeserta<<": ";
                     cin>>noKursi;
                     info(waiting).noKursi = noKursi;
+                    
+                    //jumlah peserta bertambah
                     info(P).jumlahPeserta = info(P).jumlahPeserta + 1;
                 }
             }
+        
         }else{
             //peserta tidak ditemukan
             cout<<"Peserta tidak terdaftar di event ini.";
         }
+    
     }else{
         //event tidak ditemukan
         cout<<"Event tidak ada!"<<endl;
@@ -351,67 +428,109 @@ void deletePesertaDiSemuaEvent(listEvent &L, string namaPeserta){
 /** I.S. terdefinisi sebuah listEvent, nama peserta yang akan dihapus dari semua event
     F.S. peserta dengan nama namaPeserta sudah terhapus dari semua event
 **/
-    adrEvent P = first(L);
+    adrEvent P = first(L); //assign P = first(L)
+    
     while (P != nil){
-        adrPeserta Q = first(peserta(P));
+        //mengulang untuk semua event
+        
+        adrPeserta Q = first(peserta(P)); //assign Q = first(listPeserta(event))
+        
         while (Q != nil){
+            //mengulang utk semua peserta yg terdaftar di event tsb
+            
             if (info(first(peserta(P))).namaPeserta == namaPeserta){
+                //peserta tsb merupakan elemen pertama
                 deleteFirstPeserta(peserta(P),Q);
+                
+                //mengecek apakah peserta tsb "reguler". Kalau iya, akan merubah jumlah peserta berkurang 1
                 if (info(Q).jenisPeserta == "reguler"){
                         info(P).jumlahPeserta = info(P).jumlahPeserta - 1;
                 }
+                
+                //mengecek apakah kuota peserta masih tersedia
                 if (info(P).jumlahPeserta < info(P).kuotaMaks){
+                    //kuota tersedia. Akan dicari waiting_list pertama
+                    
                     adrPeserta waiting = findFirstWaitingList(peserta(P));
                     if (waiting != nil){
+                        //waiting_list pertama ditemukan. Merubah menjadi reguler
                         string noKursi;
                         info(waiting).jenisPeserta = "reguler";
+                        
                         cout<<"EVENT: "<<info(P).namaEvent<<endl;
                         cout<<"Waiting list teratas adalah "<<info(waiting).namaPeserta<<endl;
                         cout<<"Masukkan no. kursi peserta "<<info(waiting).namaPeserta<<" ";
                         cin>>noKursi;
                         cout<<endl;
+                        
+                        //jumlah peserta menjadi bertambah 1
                         info(waiting).noKursi = noKursi;
                         info(P).jumlahPeserta = info(P).jumlahPeserta + 1;
                     }
                 }
+            
             }else if(info(last(peserta(P))).namaPeserta == namaPeserta){
+                //peserta tsb merupakan elm terakhir
                 deleteLastPeserta(peserta(P),Q);
+                
                 if (info(Q).jenisPeserta == "reguler"){
+                        //mengecek apakah peserta tsb "reguler". Kalau iya, akan merubah jumlah peserta berkurang 1
                         info(P).jumlahPeserta = info(P).jumlahPeserta - 1;
                 }
+                
+                //mengecek apakah kuota peserta masih tersedia
                 if (info(P).jumlahPeserta < info(P).kuotaMaks){
+                    //kuota tersedia. Akan dicari waiting_list pertama
                     adrPeserta waiting = findFirstWaitingList(peserta(P));
                     if (waiting != nil){
+                        //waiting_list pertama ditemukan. Merubah menjadi reguler
                         string noKursi;
                         info(waiting).jenisPeserta = "reguler";
+                        
+                        
                         cout<<"EVENT: "<<info(P).namaEvent<<endl;
                         cout<<"Waiting list teratas adalah "<<info(waiting).namaPeserta<<endl;
                         cout<<"Masukkan no. kursi peserta "<<info(waiting).namaPeserta<<" ";
                         cin>>noKursi;
                         cout<<endl;
+                        
+                        //jumlah peserta menjadi bertambah 1
                         info(waiting).noKursi = noKursi;
                         info(P).jumlahPeserta = info(P).jumlahPeserta + 1;
                     }
                 }
+            
             }else{
-                adrPeserta R = first(peserta(P));
+                adrPeserta R = first(peserta(P)); //assign R dengan first peserta event
+                
                 while(info(next(R)).namaPeserta != namaPeserta){
+                    //mengulang sampai ditemukan yang after R adalah elemen yang mau dihapus
                     R = next(R);
                 }
                 deleteAfterPeserta(R,Q);
+                
+                //mengecek apakah peserta tsb "reguler". Kalau iya, akan merubah jumlah peserta berkurang 1
                 if (info(Q).jenisPeserta == "reguler"){
                         info(P).jumlahPeserta = info(P).jumlahPeserta - 1;
                 }
+                
                 if (info(P).jumlahPeserta < info(P).kuotaMaks){
+                    //kuota masih tersedia. Mengecek waiting_list pertama
                     adrPeserta waiting = findFirstWaitingList(peserta(P));
+                    
                     if (waiting != nil){
+                        //waiting_list pertama ditemukan. Merubah jenis peserta menjadi reguler
                         string noKursi;
                         info(waiting).jenisPeserta = "reguler";
+                        
                         cout<<"EVENT: "<<info(P).namaEvent<<endl;
                         cout<<"Waiting list teratas adalah "<<info(waiting).namaPeserta<<endl;
                         cout<<"Masukkan no. kursi peserta "<<info(waiting).namaPeserta<<" ";
                         cin>>noKursi;
                         cout<<endl;
+                        
+                        
+                        //jumlah peserta menjadi bertambah 1
                         info(waiting).noKursi = noKursi;
                         info(P).jumlahPeserta = info(P).jumlahPeserta + 1;
                     }
@@ -430,18 +549,27 @@ void showAlldataEvent(listEvent L){
     adrEvent P = first(L);
     int i = 1;
     int k = 1;
+    
     if (P != nil){
+        //event tidak ksosong
+        
         while(P != nil){
+            
+            //data dari event ditampilkan
             cout<<"["<<i<<"]"<<endl;
             cout<<"Nama event           |"<<info(P).namaEvent<<endl;
             cout<<"Jenis event          |"<<info(P).jenisEvent<<endl;
             cout<<"Tanggal pelaksanaan  |"<<info(P).tanggalPelaksanaan<<endl;
             cout<<"Jumlah peserta       |"<<info(P).jumlahPeserta<<endl;
             cout<<"Kuota maksimum       |"<<info(P).kuotaMaks<<endl;
-            adrPeserta Q = first(peserta(P));
+            
+            adrPeserta Q = first(peserta(P)); //assign Q dengan peserta pertama dalam event P
+            
             if(Q != nil){
+                //peserta tidak kosong
                 cout<<endl;
                 cout<<">>>>> DAFTAR PESERTA <<<<<"<<endl;
+                
                 while (Q != nil){
                     cout<<"["<<k<<"]"<<endl;
                     cout<<"No Peserta        |"<<info(Q).noPeserta<<endl;
@@ -455,6 +583,7 @@ void showAlldataEvent(listEvent L){
                     k = k + 1;
                 }
             }else{
+                //peserta tidak kosong
                 cout<<endl;
                 cout<<"Peserta kosong"<<endl;
             }
@@ -465,7 +594,9 @@ void showAlldataEvent(listEvent L){
         getch();
         system("cls");
         }
+        
     }else{
+        //event kosong
         cout<<"List Event kosong!"<<endl;
     }
     cout<<"Semua event sudah ditampilkan"<<endl;
@@ -473,17 +604,22 @@ void showAlldataEvent(listEvent L){
 }
 
 void showAlldataEventTertentu(listEvent L, adrEvent P){
-/** I.S. terdefinisi sebuah listEvent L, mungkin kosong
-    F.S. semua event dan data pesertanya sudah ditampilkan
+/** I.S. terdefinisi sebuah listEvent L, mungkin kosong dan adrEvent P yang akan ditampilkan pesertanya
+    F.S. event tsb dan data pesertanya sudah ditampilkan
 **/
-    int k = 1;
+    int k = 1; //penomoran
+    
+    //data dari event ditampilkam
     cout<<"Nama event           |"<<info(P).namaEvent<<endl;
     cout<<"Jenis event          |"<<info(P).jenisEvent<<endl;
     cout<<"Tanggal pelaksanaan  |"<<info(P).tanggalPelaksanaan<<endl;
     cout<<"Jumlah peserta       |"<<info(P).jumlahPeserta<<endl;
     cout<<"Kuota maksimum       |"<<info(P).kuotaMaks<<endl;
-    adrPeserta Q = first(peserta(P));
+    
+    adrPeserta Q = first(peserta(P)); //assign Q = first peserta dari event
     if(Q != nil){
+        //daftar peserta tdk kosong
+        
         cout<<">>>>> DAFTAR PESERTA <<<<<"<<endl;
         while (Q != nil){
             cout<<"["<<k<<"]"<<endl;
@@ -498,7 +634,9 @@ void showAlldataEventTertentu(listEvent L, adrEvent P){
             k = k + 1;
         }
         cout<<endl;
+    
     }else{
+        //daftar peserta kosonb
         cout<<endl;
         cout<<"Peserta kosong"<<endl;
     }
@@ -508,8 +646,10 @@ adrEvent findEvent0Peserta(listEvent &L){
 /**
     Mengembalikan alamat event dengan jumlah peserta = 0, dan nil jika tidak ditemukan.
 **/
-    adrEvent P = first(L);
+    adrEvent P = first(L); //assign
+    
     while (P != nil){
+        //mengulang sampai ujung listEvent
         if(info(P).jumlahPeserta == 0){
             return P;
         }
@@ -561,12 +701,17 @@ int menu(){
     cin>>pilihan;
 
     while(1){
+        //mengulang sampai berhasil
         if(cin.fail() || pilihan < 0 || pilihan > 14){
+            //mengecek apabila user memasukkan string maka akan ada error atau pilihan tidak ada dalam menu
+            
+            //clear cin
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(),'\n');
             cout<<"INPUT INVALID"<<endl;
             getch();
             system("cls");
+            
             cout<<"===============> MENU <==============="<<endl;
             cout<<"[1]  Tambahkan Event"<<endl;
             cout<<"[2]  Tambahkan Peserta"<<endl;
@@ -588,7 +733,9 @@ int menu(){
             cout<<"Masukkan pilihan: ";
             cin>>pilihan;
         }
+        
         if(!cin.fail() && pilihan >= 0 && pilihan <= 14){
+            //user tidak menginputkan string dan pilihan masuk dalam range menu
             return pilihan;
         }
     }
@@ -596,7 +743,7 @@ int menu(){
 
 void showAllEvent(listEvent L){
 /** I.S. terdefinisi sebuah listEvent L, mungkin kosong
-    F.S. semua event dan data pesertanya sudah ditampilkan
+    F.S. semua event sudah ditampilkan
 **/
     adrEvent P = first(L);
     int i = 1;
