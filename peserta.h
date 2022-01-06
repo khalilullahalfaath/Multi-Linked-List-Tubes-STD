@@ -42,8 +42,8 @@ void deleteFirstPeserta(listPeserta &L, adrPeserta &P);
 void deleteLastPeserta(listPeserta &L, adrPeserta &P);
 void deleteAfterPeserta(adrPeserta prec, adrPeserta &P);
 void deletePeserta(listPeserta &L, string namaPeserta, adrPeserta &Q);
+void showAllNamaPeserta(listPeserta L);
 void showListPeserta(listPeserta L);
-
 
 
 #endif // PESERTA_H_INCLUDED

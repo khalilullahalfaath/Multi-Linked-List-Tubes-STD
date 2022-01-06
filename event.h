@@ -2,6 +2,10 @@
 #define EVENT_H_INCLUDED
 
 #include <iostream>
+#include <stdlib.h>
+#include <conio.h>
+#include <limits>
+
 #include "peserta.h"
 using namespace std;
 
@@ -52,6 +56,8 @@ void deletePesertaDiSemuaEvent(listEvent &L, string namaPeserta);
 void showAlldataEventTertentu(listEvent L, adrEvent P);
 void showEventTersedia(listEvent L);
 void deleteEventKosong(listEvent &L);
+adrEvent findEvent0Peserta(listEvent &L);
+void showAllEvent(listEvent L);
 int menu();
 
 #endif // EVENT_H_INCLUDED

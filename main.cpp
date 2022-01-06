@@ -20,26 +20,12 @@ int main()
     createListPeserta(pesertaList);
 
     int pilihan = menu();
-    /**
-    cout<<"===============> MENU <==============="<<endl;
-    cout<<"[1]  Tambahkan Event"<<endl;
-    cout<<"[2]  Tambahkan Peserta"<<endl;
-    cout<<"[3]  Menambahkan seorang peserta ke sebuah event"<<endl;
-    cout<<"[4]  Menampilkan jumlah peserta semua event"<<endl;
-    cout<<"[5]  Menampilkan data peserta di event tertentu"<<endl;
-    cout<<"[6]  Menampilkan semua event dengan data pesertanya"<<endl;
-    cout<<"[7]  Mencari event tertentu dengan kuota yang masih tersedia"<<endl;
-    cout<<"[8]  Mencari peserta tertentu pada sebuah event"<<endl;
-    cout<<"[9]  Menghapus peserta dari event tertentu"<<endl;
-    cout<<"[10] Menghapus data peserta dari sistem"<<endl;
-    cout<<"[11] Menghapus event dengan peserta berjumlah 0"<<endl;
-    cout<<"[0] Exit"<<endl;
-    **/
-
     while(pilihan != 0){
+        system("cls");
         switch(pilihan){
         case 1:
         {
+            cout<<">>>>>>>>>> REGISTRASI EVENT <<<<<<<<<<"<<endl;
             inputEvent = createNewEvent();
             E = newElmEvent(inputEvent);
             insertLastEvent(events,E);
@@ -50,6 +36,7 @@ int main()
         }
         case 2:
         {
+            cout<<">>>>>>>>>> REGISTRASI PESERTA <<<<<<<<<<"<<endl;
             inputPeserta = createPeserta();
             P = newElmPeserta(inputPeserta);
             insertLastPeserta(pesertaList,P);
@@ -61,16 +48,16 @@ int main()
 
         case 3:
         {
+            cout<<">>>>>>>>>> REGISTRASI PESERTA KE EVENT TERTENTU <<<<<<<<<<"<<endl;
             string inputNamaPeserta;
             cout<<"Berikut adalah list Peserta: "<<endl;
-            showListPeserta(pesertaList);
+            showAllNamaPeserta(pesertaList);
             if (first(pesertaList) != nil){
                 cout<<"Masukkan nama Peserta: ";
                 cin>>inputNamaPeserta;
                 adrPeserta pesertaEvent = findPeserta(pesertaList,inputNamaPeserta);
                 if (pesertaEvent != nil){
                     joinEvent(events,pesertaEvent);
-                    showjumlahPesertasemuaEvent(events);
                 }else{
                     cout<<"Peserta tidak ada dalam listPeserta. Registrasilah dulu!"<<endl;
                 }
@@ -82,6 +69,7 @@ int main()
         }
         case 4:
             {
+                cout<<">>>>>>>>>> TAMPILAN SEMUA JUMLAH PESERTA SEMUA EVENT <<<<<<<<<<"<<endl;
                 showjumlahPesertasemuaEvent(events);
                 getch();
                 system("cls");
@@ -89,6 +77,7 @@ int main()
             }
         case 5:
             {
+                cout<<">>>>>>>>>> TAMPILAN DATA PESERTA SUATU EVENT TERTENTU <<<<<<<<<<"<<endl;
                 string inputNamaEvent;
                 cout<<"Masukkan nama event yang akan ditampilkan data pesertanya: ";
                 cin>>inputNamaEvent;
@@ -104,6 +93,7 @@ int main()
             }
         case 6:
             {
+                cout<<">>>>>>>>>> TAMPILAN SEMUA DATA EVENT BESERTA PESERTANYA <<<<<<<<<<"<<endl;
                 showAlldataEvent(events);
                 getch();
                 system("cls");
@@ -111,6 +101,7 @@ int main()
             }
         case 7:
             {
+                cout<<">>>>>>>>>> TAMPILAN SEMUA EVENT YANG TERSEDIA (BELUM FULL) <<<<<<<<<<"<<endl;
                 showEventTersedia(events);
                 getch();
                 system("cls");
@@ -118,6 +109,7 @@ int main()
             }
         case 8:
             {
+                cout<<">>>>>>>>>> PENCARIAN PESERTA DI SUATU EVENT TERTENTU <<<<<<<<<<"<<endl;
                 adrEvent cariEvent;
                 adrPeserta cariPeserta;
                 string inputNamaPeserta, inputNamaEvent;
@@ -130,6 +122,12 @@ int main()
                     cariPeserta = findPeserta(peserta(cariEvent),inputNamaPeserta);
                     if (cariPeserta != nil){
                         cout<<inputNamaPeserta<<" terdaftar di "<<info(cariEvent).namaEvent<<endl;
+                        if(info(cariPeserta).jenisPeserta == "reguler"){
+                            cout<<"Dengan status    : "<<info(cariPeserta).jenisPeserta<<endl;
+                            cout<<"Dengan kursi     : "<<info(cariPeserta).noKursi<<endl;
+                        }else if(info(cariPeserta).jenisPeserta == "waiting_list"){
+                            cout<<"Dengan status    : "<<info(cariPeserta).jenisPeserta<<endl;
+                        }
                     }else{
                         cout<<inputNamaPeserta<<" tidak terdaftar di "<<info(cariEvent).namaEvent<<endl;
                     }
@@ -142,6 +140,7 @@ int main()
             }
         case 9:
             {
+                cout<<">>>>>>>>>> MENGHAPUS PESERTA DARI EVENT TERTENTU <<<<<<<<<<"<<endl;
                 adrEvent cariEvent;
                 adrPeserta cariPeserta,dataHapus;
                 string inputNamaPeserta, inputNamaEvent,mau;
@@ -158,6 +157,8 @@ int main()
                         cin>>mau;
                         if (mau == "y" || mau == "Y"){
                             deletePesertaEventTertentu(events,inputNamaEvent,inputNamaPeserta,dataHapus);
+                        }else{
+                            break;
                         }
                     }else{
                         cout<<inputNamaPeserta<<" tidak terdaftar di "<<info(cariEvent).namaEvent<<endl;
@@ -171,19 +172,25 @@ int main()
             }
         case 10:
             {
+                cout<<">>>>>>>>>> MENGHAPUS PESERTA DARI SEMUA EVENT ATAU SISTEM <<<<<<<<<<"<<endl;
                 string inputNamaPeserta;
                 adrPeserta hapus;
                 cout<<"Masukkan nama peserta yang akan dihapus dari semua event/sistem: ";
                 cin>>inputNamaPeserta;
-                deletePeserta(pesertaList,inputNamaPeserta,hapus);
-                deletePesertaDiSemuaEvent(events,inputNamaPeserta);
-                cout<<"Peserta "<<info(hapus).namaPeserta<<" sudah dihapus dari sistem"<<endl;
+                if (findPeserta(pesertaList,inputNamaPeserta) != nil){
+                    deletePeserta(pesertaList,inputNamaPeserta,hapus);
+                    deletePesertaDiSemuaEvent(events,inputNamaPeserta);
+                    cout<<"Peserta "<<info(hapus).namaPeserta<<" sudah dihapus dari sistem"<<endl;
+                }else{
+                    cout<<"Peserta tidak teregistrasi!"<<endl;
+                }
                 getch();
                 system("cls");
                 break;
             }
         case 11:
             {
+                cout<<">>>>>>>>>> MENGHAPUS EVENT DENGAN JUMLAH PESERTA 0 <<<<<<<<<<"<<endl;
                 deleteEventKosong(events);
                 cout<<"Penghapusan berhasil!"<<endl;
                 getch();
@@ -193,6 +200,7 @@ int main()
             }
         case 12:
             {
+                cout<<">>>>>>>>>> MENAMPILKAN PESERTA YANG TEREGISTRASI <<<<<<<<<<"<<endl;
                 showListPeserta(pesertaList);
                 cout<<"selesai"<<endl;
                 getch();
@@ -201,13 +209,25 @@ int main()
             }
         case 13:
             {
+                cout<<">>>>>>>>>> MENGHAPUS SUATU EVENT DARI SISTEM <<<<<<<<<<"<<endl;
                 string inputNamaEvent;
                 adrEvent hapus;
-                cout<<"Masukkan nama event yang mau dihapus: "<<endl;
+                cout<<"Masukkan nama event yang mau dihapus: ";
                 cin>>inputNamaEvent;
-
-                deleteEventMaster(events, inputNamaEvent,hapus);
-                cout<<info(hapus).namaEvent<<" sudah dihapus dari sistem"<<endl;
+                if(findEvent(events,inputNamaEvent) != nil){
+                    deleteEventMaster(events, inputNamaEvent,hapus);
+                    cout<<info(hapus).namaEvent<<" sudah dihapus dari sistem"<<endl;
+                }else{
+                    cout<<"Event belum teregistrasi!"<<endl;
+                }
+                getch();
+                system("cls");
+                break;
+            }
+        case 14:
+            {
+                cout<<">>>>>>>>>> MENAMPILKAN SEMUA EVENT <<<<<<<<<<"<<endl;
+                showAllEvent(events);
                 getch();
                 system("cls");
                 break;

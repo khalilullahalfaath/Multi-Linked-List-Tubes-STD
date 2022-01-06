@@ -167,12 +167,32 @@ void deletePeserta(listPeserta &L, string namaPeserta, adrPeserta &Q){
     }
 }
 
-void showListPeserta(listPeserta L){
+void showAllNamaPeserta(listPeserta L){
     adrPeserta P = first(L);
     if (P != nil){
         while (P != nil){
             cout<<info(P).namaPeserta<<endl;
             P = next(P);
+        }
+    }else{
+        cout<<"List peserta kosong"<<endl;
+    }
+    cout<<endl;
+}
+
+void showListPeserta(listPeserta L){
+    adrPeserta P = first(L);
+    int i = 1;
+    if (P != nil){
+        while (P != nil){
+            cout<<"["<<i<<"]"<<endl;
+            cout<<"No Peserta        |"<<info(P).noPeserta<<endl;
+            cout<<"Nama Peserta      |"<<info(P).namaPeserta<<endl;
+            cout<<"E-mail Peserta    |"<<info(P).emailPeserta<<endl;
+            cout<<"No. Telp. Peserta |"<<info(P).noTelpPeserta<<endl;
+            cout<<endl;
+            P = next(P);
+            i++;
         }
     }else{
         cout<<"List peserta kosong"<<endl;
