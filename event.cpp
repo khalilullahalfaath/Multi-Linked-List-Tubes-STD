@@ -11,27 +11,28 @@ void createListEvent(listEvent &L){
 
 adrEvent findEvent(listEvent L, string cariNamaEvent){
 /**
-    Mengembalikan pointer alamat adrEvent apabila terdapat sebuah event sesuai dengan cariNamaEvent bertipe string
-    dan mengembalikan nil apabila sebaliknya
+    Mengembalikan alamat adrEvent dengan namaEvent = cariNamaEvent
+    dan mengembalikan nil apabila tidak ditemukan sebuah event dengan namaEvent = cariNamaEvent
 **/
     adrEvent P = first(L);
+    //Mengecek berulang sampai akhir listEvent
     while (P != nil){
+        //Apabila didapat sebuah event dengan namaEvent = cariNamaEvent akan return alamat event tersebut
         if (info(P).namaEvent == cariNamaEvent){
             return P;
         }
         P = next(P);
     }
+    //List sudah dicek semuanya, return NULL
     return nil;
 }
 
 infotypeEvent createNewEvent(){
 /**
-    Mengembalikan newEvent sesuai inputan dari user
+    Mengembalikan newEvent yang bertipe infotypeEvent sesuai inputan dari user
 **/
     infotypeEvent newEvent;
-    string namaEvent;
-    string jenisEvent;
-    string tanggalPelaksanaan;
+    string namaEvent, jenisEvent, tanggalPelaksanaan;
     int kuotaMaks;
 
     //menginput data event baru
@@ -56,12 +57,14 @@ infotypeEvent createNewEvent(){
 
 adrEvent newElmEvent(infotypeEvent input){
 /**
-    Mengembalikan P yang bertipe adrEvent yang berisi input bertipe event
+    Mengembalikan P yang bertipe adrEvent yang berisi input bertipe infotypeEvent
 **/
+    //Alokasi P bertipe adrEvent
     adrEvent P = new elmEvent;
     prev(P) = nil;
     next(P) = nil;
     info(P) = input;
+    //Setiap event memuat satu listPeserta yang merupakan peserta dari event tersebut
     createListPeserta(peserta(P));
 
     return P;
@@ -69,10 +72,12 @@ adrEvent newElmEvent(infotypeEvent input){
 
 void insertLastEvent(listEvent &L, adrEvent P){
 /**
-    I.S. listEvent L mungkin kosong
-    F.S. sebuah event P telah ditambahkan setelah elemen terakhir apabila event tsb belum ada di dalam list
-         dan mengeluarkan pesan "Event sudah ada dalam list" apabila event sudah ada dalam list
+    I.S. listEvent L, mungkin kosong dan sebuah adrEvent P yang siap dimasukkan ke dalam listEvent
+    F.S. sebuah event P telah ditambahkan sebagai elemen terakhir, apabila event tsb belum ada di dalam listEvent
+         dan mengeluarkan pesan "Event sudah ada dalam list. Tidak perlu ditambahkan lagi" 
+         apabila event sudah ada dalam list.
 **/
+    //Mengecek apakah event dengan nama event namaEvent ada dalam listEvent
     if (findEvent(L,info(P).namaEvent) == nil){
         //Event tidak ada dalam list
         if (first(L) == nil && last(L) == nil){
@@ -80,6 +85,7 @@ void insertLastEvent(listEvent &L, adrEvent P){
             first(L) = P;
             last(L) = P;
         }else{
+            //listEvent tidak kosong
             prev(P) = last(L);
             next(last(L)) = P;
             last(L) = P;
