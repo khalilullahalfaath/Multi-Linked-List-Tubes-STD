@@ -2,9 +2,9 @@
 #define EVENT_H_INCLUDED
 
 #include <iostream>
-#include <stdlib.h>
-#include <conio.h>
-#include <limits>
+#include <stdlib.h> //untuk clear screen
+#include <conio.h> //untuk getch()
+#include <limits> //untuk handle error
 
 #include "peserta.h"
 using namespace std;

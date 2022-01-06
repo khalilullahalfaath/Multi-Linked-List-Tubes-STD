@@ -16,9 +16,7 @@ typedef struct elmPeserta *adrPeserta;
 typedef struct peserta infotypePeserta;
 
 struct peserta{
-    string noPeserta, namaPeserta, emailPeserta, noTelpPeserta;
-    string noKursi;
-    string jenisPeserta;
+    string noPeserta, namaPeserta, emailPeserta, noTelpPeserta, noKursi, jenisPeserta;
 };
 
 /** listPeserta adalah double linked list dengan pointer last**/
@@ -28,8 +26,7 @@ struct elmPeserta{
 };
 
 struct listPeserta{
-    adrPeserta first;
-    adrPeserta last;
+    adrPeserta first, last;
 };
 
 void createListPeserta(listPeserta &L);

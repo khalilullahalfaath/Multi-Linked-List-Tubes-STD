@@ -16,6 +16,7 @@ int main()
     infotypeEvent inputEvent;
     infotypePeserta inputPeserta;
 
+    //membuat listevent dan list peserta (Umum)
     createListEvent(events);
     createListPeserta(pesertaList);
 
