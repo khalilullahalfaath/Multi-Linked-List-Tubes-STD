@@ -220,9 +220,11 @@ void showListPeserta(listPeserta L){
     I.S. terdefinisi sebuah listPeserta L, mungkin kosong
     F.S. semua data peserta sudah ditampilkan
 **/
-    adrPeserta P = first(L);
-    int i = 1;
+    adrPeserta P = first(L); //assign P = first(L)
+    int i = 1; //penomoran
+    
     if (P != nil){
+        //list tdk kosong
         while (P != nil){
             cout<<"["<<i<<"]"<<endl;
             cout<<"No Peserta        |"<<info(P).noPeserta<<endl;
@@ -233,7 +235,9 @@ void showListPeserta(listPeserta L){
             P = next(P);
             i++;
         }
+    
     }else{
+        //list kosong
         cout<<"List peserta kosong"<<endl;
     }
     cout<<endl;
