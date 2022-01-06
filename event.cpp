@@ -11,27 +11,28 @@ void createListEvent(listEvent &L){
 
 adrEvent findEvent(listEvent L, string cariNamaEvent){
 /**
-    Mengembalikan pointer alamat adrEvent apabila terdapat sebuah event sesuai dengan cariNamaEvent bertipe string
-    dan mengembalikan nil apabila sebaliknya
+    Mengembalikan alamat adrEvent dengan namaEvent = cariNamaEvent
+    dan mengembalikan nil apabila tidak ditemukan sebuah event dengan namaEvent = cariNamaEvent
 **/
     adrEvent P = first(L);
+    //Mengecek berulang sampai akhir listEvent
     while (P != nil){
+        //Apabila didapat sebuah event dengan namaEvent = cariNamaEvent akan return alamat event tersebut
         if (info(P).namaEvent == cariNamaEvent){
             return P;
         }
         P = next(P);
     }
+    //List sudah dicek semuanya, return NULL
     return nil;
 }
 
 infotypeEvent createNewEvent(){
 /**
-    Mengembalikan newEvent sesuai inputan dari user
+    Mengembalikan newEvent yang bertipe infotypeEvent sesuai inputan dari user
 **/
     infotypeEvent newEvent;
-    string namaEvent;
-    string jenisEvent;
-    string tanggalPelaksanaan;
+    string namaEvent, jenisEvent, tanggalPelaksanaan;
     int kuotaMaks;
 
     //menginput data event baru
@@ -56,12 +57,14 @@ infotypeEvent createNewEvent(){
 
 adrEvent newElmEvent(infotypeEvent input){
 /**
-    Mengembalikan P yang bertipe adrEvent yang berisi input bertipe event
+    Mengembalikan P yang bertipe adrEvent yang berisi input bertipe infotypeEvent
 **/
+    //Alokasi P bertipe adrEvent
     adrEvent P = new elmEvent;
     prev(P) = nil;
     next(P) = nil;
     info(P) = input;
+    //Setiap event memuat satu listPeserta yang merupakan peserta dari event tersebut
     createListPeserta(peserta(P));
 
     return P;
@@ -69,10 +72,12 @@ adrEvent newElmEvent(infotypeEvent input){
 
 void insertLastEvent(listEvent &L, adrEvent P){
 /**
-    I.S. listEvent L mungkin kosong
-    F.S. sebuah event P telah ditambahkan setelah elemen terakhir apabila event tsb belum ada di dalam list
-         dan mengeluarkan pesan "Event sudah ada dalam list" apabila event sudah ada dalam list
+    I.S. listEvent L, mungkin kosong dan sebuah adrEvent P yang siap dimasukkan ke dalam listEvent
+    F.S. sebuah event P telah ditambahkan sebagai elemen terakhir, apabila event tsb belum ada di dalam listEvent
+         dan mengeluarkan pesan "Event sudah ada dalam list. Tidak perlu ditambahkan lagi" 
+         apabila event sudah ada dalam list.
 **/
+    //Mengecek apakah event dengan nama event namaEvent ada dalam listEvent
     if (findEvent(L,info(P).namaEvent) == nil){
         //Event tidak ada dalam list
         if (first(L) == nil && last(L) == nil){
@@ -80,6 +85,7 @@ void insertLastEvent(listEvent &L, adrEvent P){
             first(L) = P;
             last(L) = P;
         }else{
+            //listEvent tidak kosong
             prev(P) = last(L);
             next(last(L)) = P;
             last(L) = P;
@@ -91,16 +97,19 @@ void insertLastEvent(listEvent &L, adrEvent P){
 }
 
 void deleteFirstEvent(listEvent &L, adrEvent &Q){
-/** I.S. terdefinisi sebuah listEvent L, mungkin kosong dan adrEvent Q untuk menyimpan event yang sudah dihapus
-    F.S. elemen pertama dari listEvent sudah dihapus
+/** I.S. terdefinisi sebuah listEvent L, mungkin kosong
+    F.S. elemen pertama dari listEvent sudah dihapus dan disimpan dalam adrEvent Q
 **/
     Q = first(L);
     if(first(L) == nil && last(L) == nil){
+        //listEvent kosong
         cout<<"Tidak ada event untuk dihapus (list kosong)"<<endl;
     }else if (first(L) == last(L)){
+        //listEvent hanya ada satu elemen
         first(L) = nil;
         last(L) = nil;
     }else{
+        //ListEvent punya lebih dari satu elemen
         first(L) = next(Q);
         next(Q) = nil;
         prev(first(L)) = nil;
@@ -108,16 +117,19 @@ void deleteFirstEvent(listEvent &L, adrEvent &Q){
 }
 
 void deletelastEvent(listEvent &L, adrEvent &Q){
-/** I.S. terdefinisi sebuah listEvent L, mungkin kosong dan adrEvent Q untuk menyimpan event yang sudah dihapus
-    F.S. elemen terakhir dari listEvent sudah dihapus
+/** I.S. terdefinisi sebuah listEvent L, mungkin kosong
+    F.S. elemen terakhir dari listEvent sudah dihapus dan disimpan dalam adrEvent Q
 **/
     Q = last(L);
     if(first(L) == nil && last(L) == nil){
+        //listEvent kosong
         cout<<"Tidak ada event untuk dihapus (list kosong)"<<endl;
     }else if (first(L) == last(L)){
+        //listEvent hanya ada satu elemen
         first(L) = nil;
         last(L) = nil;
     }else{
+        //listEvent punya lebih dari satu elemen
         last(L) = prev(Q);
         prev(Q) = nil;
         next(last(L)) = nil;
@@ -125,8 +137,8 @@ void deletelastEvent(listEvent &L, adrEvent &Q){
 }
 
 void deleteAfterEvent(adrEvent prec, adrEvent &Q){
-/** I.S. terdefinisi sebuah listEvent L
-    F.S. elemen setelah dari prec telah dihapus dan disimpan dalam pointer alamat P
+/** I.S. terdefinisi sebuah adrEvent prec yang elemen setelahnya akan dihapus
+    F.S. elemen setelah prec telah dihapus dari listEvent dan disimpan dalam adrEvent Q
 **/
     Q = next(prec);
     next(prec) = next(Q);
@@ -136,18 +148,24 @@ void deleteAfterEvent(adrEvent prec, adrEvent &Q){
 }
 
 void deleteEventMaster(listEvent &L, string namaEvent, adrEvent &Q){
-    /** I.S. terdefinisi sebuah listEvent L dan namaEvent yang akan dihapus dari list
-        F.S.event dengan nama namaEvent sudah dihapus dari list dan disimpan dalam pointer Q
-    **/
+/** I.S. terdefinisi sebuah listEvent L dan namaEvent yang akan dihapus dari list
+    F.S. event dengan nama namaEvent sudah dihapus dari list dan disimpan dalam adrEvent Q. 
+         Apabila event tidak ditemukan di dalam listEvent maka akan mengeluarkan pesan "Event belum terdaftar!"
+**/
     Q = findEvent(L,namaEvent);
     if (Q != nil){
+        //Event ditemukan di dalam listEvent
         if (info(first(L)).namaEvent == namaEvent){
+            //Event yang ingin dihapus merupakan elemen pertama dalam list
             deleteFirstEvent(L,Q);
         }else if(info(last(L)).namaEvent == namaEvent){
+            //Event yang ingin dihapus merupakan elemen terakhir dalam list
             deletelastEvent(L,Q);
         }else{
+            //Event yang ingin dihapus bukan elemen pertama atau terakhir dari list.
             adrEvent R = first(L);
             while(info(next(R)).namaEvent != namaEvent){
+                //Mencari elemen dengan elemen setelahnya merupakan event yang ingin dihapus
                 R = next(R);
             }
             deleteAfterEvent(R,Q);
@@ -158,9 +176,13 @@ void deleteEventMaster(listEvent &L, string namaEvent, adrEvent &Q){
 }
 
 void showAllEventName(listEvent L){
+/** I.S. terdefinisi sebuah listEvent L
+    F.S. semua namaEvent dari setiap event sudah ditampilkan. Apabila listEvent kosong, akan menampilkan pesan "Belum ada event untuk ditampilkan"
+**/
     adrEvent P = first(L);
     int i = 1;
     if (P != nil){
+        //listEvent tidak kosong
         while (P != nil){
             cout<<"["<<i<<"] ";
             cout<<info(P).namaEvent<<endl;
@@ -168,6 +190,7 @@ void showAllEventName(listEvent L){
             i++;
         }
     }else{
+        //listEvent kosong
         cout<<"Belum ada event untuk ditampilkan"<<endl;
     }
 
@@ -176,18 +199,29 @@ void showAllEventName(listEvent L){
 void joinEvent(listEvent &L, adrPeserta daftar){
 /** I.S. terdefinisi listEvent L dan pointer peserta yang akan dimasukkan ke event tertentu
     F.S. peserta yang tersimpan di pointer P sudah masuk ke salah satu event yang dipilih
+    Process. Akan dibuat sebuah event baru dengan info sama dengan info daftar. Kemudian akan ditampilkan semua event yang terdaftar 
+             dan user akan memilih event yang akan diikuti. Apabila event ditemukan dan peserta belum terdaftar di dalam event tersebut, 
+             akan diperiksa apakah kuotaMaks dari event sudah terpenuhi, apabila iya, jenis peserta akan menjadi "waiting_list" 
+             atau "reguler" apabila sebaliknya dan akan diminta no. kursi untuk peserta di event tsb.
+             
 **/
+    //Mengcopy info(daftar) ke dalam P
     adrPeserta P = newElmPeserta(info(daftar));
+    cout<<"Berikut adalah event-event yang tersedia"<<endl;
     showAllEventName(L);
     string pilihan;
     cout<<"Peserta tersebut akan masuk ke event mana? (tulis nama eventnya): ";
     cin>>pilihan;
     adrEvent Q = findEvent(L,pilihan);
     if (Q != nil){
+        //event ditemukan dalam listEvent
         if (findPeserta(peserta(Q),info(P).namaPeserta) == nil){
+            //peserta belum terdaftar dalam event tsb
             if (info(Q).kuotaMaks <= info(Q).jumlahPeserta){
+                //kuotaMaks sudah tercapai
                 info(P).jenisPeserta = "waiting_list";
             }else{
+                //kuotaMaks belum tercapai
                 string noKursi;
                 info(Q).jumlahPeserta = info(Q).jumlahPeserta + 1;
                 info(P).jenisPeserta = "reguler";
@@ -196,68 +230,80 @@ void joinEvent(listEvent &L, adrPeserta daftar){
                 info(P).noKursi = noKursi;
             }
             insertLastPeserta(peserta(Q),P);
+            cout<<"Peserta sudah masuk ke dalam event"<<endl;
             cout<<"Status peserta adalah "<<info(P).jenisPeserta<<endl;
         }else{
+            //peserta sudah terdaftar di dalam event
             cout<<"Peserta sudah terdaftar dalam event tersebut!"<<endl;
         }
     }else{
+        //event tidak ditemukan dalam listEvent
         cout<<"event tersebut tidak ada. Buat event terlebih dahulu!"<<endl;
     }
 }
 
 void showjumlahPesertasemuaEvent(listEvent L){
 /** I.S. terdefinisi sebuah listEvent L, mungkin kosong
-    F.S. semua nama event beserta jumlah pesertanya sudah ditampilkan
+    F.S. semua nama event beserta jumlah pesertanya sudah ditampilkan. 
+         Menampilkan pesan "Tidak ada event untuk ditampilkan" apabila list kosong
 **/
     adrEvent P = first(L);
     int i = 1;
     if (P != nil){
+        //listEvent tidak kosong
         while (P != nil){
+            //mengulang untuk semua event
+            cout<<"Nama event | jumlah peserta "<<endl;
             cout<<"["<<i<<"] ";
-            cout<<info(P).namaEvent<<"| ";
+            cout<<info(P).namaEvent<<" | ";
             cout<<info(P).jumlahPeserta<<endl;
             P = next(P);
             i++;
         }
     }else{
+        //listEvent kosong
         cout<<"Tidak ada event untuk ditampilkan"<<endl;
     }
 }
 
 void showEventTersedia(listEvent L){
 /** I.S. terdefinisi sebuah listEvent L, mungkin kosong
-    F.S. semua nama event dengan jumlah peserta < kuotaMaks sudah ditampilkan
+    F.S. semua nama event dengan jumlah peserta < kuotaMaks sudah ditampilkan. Apabila list kosong, akan menampilkan pesan "Tidak ada event untuk ditampilkan"
 **/
     adrEvent P = first(L);
     int i = 1;
     if (P != nil){
+        //listEvent tidak kosong
         while (P != nil){
             if (info(P).kuotaMaks > info(P).jumlahPeserta){
-            cout<<"["<<i<<"] ";
-            cout<<info(P).namaEvent<<"| "<<endl;
-            cout<<"Jumlah peserta        = ";
-            cout<<info(P).jumlahPeserta<<endl;
-            cout<<"Jumlah kuota maksimal = ";
-            cout<<info(P).kuotaMaks<<endl;
-            cout<<"Kuota yang tersedia   = ";
-            cout<<info(P).kuotaMaks - info(P).jumlahPeserta<<endl;
-        }
-        P = next(P);
-        i++;
+                cout<<"["<<i<<"] ";
+                cout<<info(P).namaEvent<<"| "<<endl;
+                cout<<"Jumlah peserta        = ";
+                cout<<info(P).jumlahPeserta<<endl;
+                cout<<"Jumlah kuota maksimal = ";
+                cout<<info(P).kuotaMaks<<endl;
+                cout<<"Kuota yang tersedia   = ";
+                cout<<info(P).kuotaMaks - info(P).jumlahPeserta<<endl;
+            }
+            P = next(P);
+            i++;
         }
     }else{
+        //listEvent kosong
         cout<<"Tidak ada event untuk ditampilkan"<<endl;
     }
 }
 
 void deletePesertaEventTertentu(listEvent &events, string namaEvent, string namaPeserta, adrPeserta &Q){
-/** I.S. terdefinisi sebuah listPeserta L dan namaPeserta yang akan dihapus
-    F.S. peserta dengan namaPeserta telah dihapus dari list
+/** I.S. terdefinisi sebuah listPeserta L dan namaPeserta peserta event namaEvent yang akan dihapus
+    F.S. peserta dengan namaPeserta telah dihapus dari anggota peserta event yang ditunjuk
 **/
     adrEvent P = findEvent(events,namaEvent);
     if(P != nil){
+        //event ditemukan
         Q = findPeserta(peserta(P),namaPeserta);
         if (Q != nil){
+            //peserta ditemukan. Akan dilakukan penghapusan sesuai posisi element
             if (info(first(peserta(P))).namaPeserta == namaPeserta){
                 deleteFirstPeserta(peserta(P),Q);
             }else if(info(last(peserta(P))).namaPeserta == namaPeserta){
@@ -270,9 +316,12 @@ void deletePesertaEventTertentu(listEvent &events, string namaEvent, string nama
                 deleteAfterPeserta(R,Q);
             }
             if (info(Q).jenisPeserta == "reguler"){
+                //peserta merupakan peserta reguler sehingga mempengaruhi jumlah peserta untuk event tsb
                 info(P).jumlahPeserta = info(P).jumlahPeserta - 1;
             }
             if (info(P).jumlahPeserta < info(P).kuotaMaks){
+                //kuota maksimal event belum terpenuhi
+                //Akan dicari peserta dengan waiting_list teratas
                 adrPeserta waiting = findFirstWaitingList(peserta(P));
                 if (waiting != nil){
                     string noKursi;
@@ -285,15 +334,17 @@ void deletePesertaEventTertentu(listEvent &events, string namaEvent, string nama
                 }
             }
         }else{
+            //peserta tidak ditemukan
             cout<<"Peserta tidak terdaftar di event ini.";
         }
     }else{
+        //event tidak ditemukan
         cout<<"Event tidak ada!"<<endl;
     }
 }
 
 void deletePesertaDiSemuaEvent(listEvent &L, string namaPeserta){
-/** I.S. terdefinisi sebuah listEvent, nama peserta yang akan dihapus dari semua event, dan adrPeserta Q untuk menyimpan pointer peserta yang sudah dihapus
+/** I.S. terdefinisi sebuah listEvent, nama peserta yang akan dihapus dari semua event
     F.S. peserta dengan nama namaPeserta sudah terhapus dari semua event
 **/
     adrEvent P = first(L);
