@@ -15,7 +15,7 @@ adrPeserta findPeserta(listPeserta L, string cariNamaPeserta){
     dan mengembalikan nil apabila sebaliknya
 **/
     adrPeserta P = first(L); //assign P
-    
+
     while (P != nil){
         //mengulang sampai selesai
         if (info(P).namaPeserta == cariNamaPeserta){
@@ -35,7 +35,7 @@ adrPeserta findFirstWaitingList(listPeserta L){
     adrPeserta P = first(L); //assign P
     while (P != nil){
         //pencarian dari depan mencari waiting list pertama
-        
+
         if (info(P).jenisPeserta == "waiting_list"){
             //waiting_list pertama ditemukan
             return P;
@@ -57,14 +57,10 @@ infotypePeserta createPeserta(){
     string noTelpPeserta;
 
     //menginput data peserta baru
-    cout<<"Masukkan nomor peserta: ";
-    cin>>noPeserta;
-    cout<<"Masukkan nama peserta: ";
-    cin>>namaPeserta;
-    cout<<"Masukkan email peserta: ";
-    cin>>emailPeserta;
-    cout<<"Masukkan nomor telepon peserta: ";
-    cin>>noTelpPeserta;
+    cout<<"Masukkan nomor peserta           : ";getline(cin >> ws, noPeserta);
+    cout<<"Masukkan nama peserta            : ";getline(cin >> ws, namaPeserta);
+    cout<<"Masukkan email peserta           : ";getline(cin >> ws, emailPeserta);
+    cout<<"Masukkan nomor telepon peserta   : ";getline(cin >> ws, noTelpPeserta);
 
     //menyimpan data peserta ke newPeserta
     newPeserta.noPeserta = noPeserta;
@@ -79,7 +75,7 @@ adrPeserta newElmPeserta(infotypePeserta input){
 /**
     Mengembalikan P yang bertipe adrPeserta yang berisi input bertipe peserta
 **/
-    
+
     adrPeserta P = new elmPeserta;
     prev(P) = nil;
     next(P) = nil;
@@ -100,7 +96,7 @@ void insertLastPeserta(listPeserta &L, adrPeserta P){
             //listPeserta dalam keadaan kosong
             first(L) = P;
             last(L) = P;
-    
+
         }else{
             //listPeserta tidak dalam keadaan kosong
             prev(P) = last(L);
@@ -119,16 +115,16 @@ void deleteFirstPeserta(listPeserta &L, adrPeserta &P){
     F.S. elemen pertama dari list L telah dihapus dan disimpan dalam pointer alamat P
 **/
     P = first(L); //assign P = first(L)
-    
+
     if(first(L) == nil && last(L) == nil){
         //list kosong
         cout<<"Tidak ada peserta untuk dihapus (list kosong)"<<endl;
-  
+
     }else if (first(L) == last(L)){
         //list hanya satu elemen
         first(L) = nil;
         last(L) = nil;
-   
+
     }else{
         //list lebih dari satu elemen
         first(L) = next(P);
@@ -142,16 +138,16 @@ void deleteLastPeserta(listPeserta &L, adrPeserta &P){
     F.S. elemen terakhir dari list L telah dihapus dan disimpan dalam pointer alamat P
 **/
     P = last(L); //assign P dengan last L
-    
+
     if(first(L) == nil && last(L) == nil){
         //list kosong
         cout<<"Tidak ada peserta untuk dihapus (list kosong)"<<endl;
-    
+
     }else if (first(L) == last(L)){
         //list hanya satu elemen
         first(L) = nil;
         last(L) = nil;
-    
+
     }else{
         //list lebih dari satu elemen
         last(L) = prev(P);
@@ -188,7 +184,7 @@ void deletePeserta(listPeserta &L, string namaPeserta, adrPeserta &Q){
             //mengulang sampai ditemukan next R adalah elemen hapus
             R = next(R);
         }
-        
+
         deleteAfterPeserta(R,Q);
     }
 }
@@ -199,7 +195,7 @@ void showAllNamaPeserta(listPeserta L){
     F.S. semua nama peserta yang teregistrasi sudah ditampilkan
 **/
     adrPeserta P = first(L); //assign P = first(L)
-    
+
     if (P != nil){
         //list tidak kosong
         while (P != nil){
@@ -207,7 +203,7 @@ void showAllNamaPeserta(listPeserta L){
             cout<<info(P).namaPeserta<<endl;
             P = next(P);
         }
-    
+
     }else{
         //list kosong
         cout<<"List peserta kosong"<<endl;
@@ -222,7 +218,7 @@ void showListPeserta(listPeserta L){
 **/
     adrPeserta P = first(L); //assign P = first(L)
     int i = 1; //penomoran
-    
+
     if (P != nil){
         //list tdk kosong
         while (P != nil){
@@ -235,7 +231,7 @@ void showListPeserta(listPeserta L){
             P = next(P);
             i++;
         }
-    
+
     }else{
         //list kosong
         cout<<"List peserta kosong"<<endl;

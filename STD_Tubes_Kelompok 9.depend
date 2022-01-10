@@ -19,23 +19,24 @@
 1641129812 source:e:\kuliah\semester 3\strukturdata\0. tubes\fix\std_tubes_kelompok 9\peserta.cpp
 	"peserta.h"
 
-1641487564 source:c:\users\fujitsu\documents\github\multi-linked-list-tubes-std\event.cpp
+1641818758 source:c:\users\fujitsu\documents\github\multi-linked-list-tubes-std\event.cpp
 	"event.h"
 
-1641488266 c:\users\fujitsu\documents\github\multi-linked-list-tubes-std\event.h
+1641745342 c:\users\fujitsu\documents\github\multi-linked-list-tubes-std\event.h
 	<iostream>
 	<stdlib.h>
 	<conio.h>
 	<limits>
+	<string>
 	"peserta.h"
 
-1641483650 c:\users\fujitsu\documents\github\multi-linked-list-tubes-std\peserta.h
+1641730735 c:\users\fujitsu\documents\github\multi-linked-list-tubes-std\peserta.h
 	<iostream>
 
-1641489277 source:c:\users\fujitsu\documents\github\multi-linked-list-tubes-std\peserta.cpp
+1641749183 source:c:\users\fujitsu\documents\github\multi-linked-list-tubes-std\peserta.cpp
 	"peserta.h"
 
-1641488439 source:c:\users\fujitsu\documents\github\multi-linked-list-tubes-std\main.cpp
+1641818779 source:c:\users\fujitsu\documents\github\multi-linked-list-tubes-std\main.cpp
 	<iostream>
 	<stdlib.h>
 	<conio.h>

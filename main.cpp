@@ -20,6 +20,59 @@ int main()
     createListEvent(events);
     createListPeserta(pesertaList);
 
+    //testing
+    inputEvent = {"Event1","jenisEvent1","06 Desember 2021","Braga",200};
+    E = newElmEvent(inputEvent);
+    insertLastEvent(events,E);
+
+    inputEvent = {"Event2","jenisEvent1","20 Desember 2021","Sudirman Hall",300};
+    E = newElmEvent(inputEvent);
+    insertLastEvent(events,E);
+
+    inputEvent = {"Event3","jenisEvent2","14 Desember 2021","Telkom University",1000};
+    E = newElmEvent(inputEvent);
+    insertLastEvent(events,E);
+
+    inputEvent = {"Event4","jenisEvent2","28 Desember 2021","Trans Luxury Hotel",100};
+    E = newElmEvent(inputEvent);
+    insertLastEvent(events,E);
+
+    inputEvent = {"Event5","jenisEvent3","30 Desember 2021","Papandayan Hotel",50};
+    E = newElmEvent(inputEvent);
+    insertLastEvent(events,E);
+
+    inputPeserta = {"234","Asep","asep@gmail.com","08228938838"};
+    P = newElmPeserta(inputPeserta);
+    insertLastPeserta(pesertaList,P);
+
+    inputPeserta = {"2344","Cecep","cecep@gmail.com","082328938838"};
+    P = newElmPeserta(inputPeserta);
+    insertLastPeserta(pesertaList,P);
+
+    inputPeserta = {"3408","Toni","toni@gmail.com","08228938838"};
+    P = newElmPeserta(inputPeserta);
+    insertLastPeserta(pesertaList,P);
+
+    inputPeserta = {"4234","Ann Lee","ann.lee@gmail.com","434238838"};
+    P = newElmPeserta(inputPeserta);
+    insertLastPeserta(pesertaList,P);
+
+    inputPeserta = {"5230","smith","smith@gmail.com","2131443438"};
+    P = newElmPeserta(inputPeserta);
+    insertLastPeserta(pesertaList,P);
+
+    inputPeserta = {"2340","Jhon","jhon@gmail.com","052424123838"};
+    P = newElmPeserta(inputPeserta);
+    insertLastPeserta(pesertaList,P);
+
+    inputPeserta = {"3249","Mike","mike@gmail.com","0822834322838"};
+    P = newElmPeserta(inputPeserta);
+    insertLastPeserta(pesertaList,P);
+
+    inputPeserta = {"3278","Hans","hans@gmail.com","0822892132387"};
+    P = newElmPeserta(inputPeserta);
+    insertLastPeserta(pesertaList,P);
+
     int pilihan = menu();
     while(pilihan != 0){
         system("cls");
@@ -54,8 +107,7 @@ int main()
             cout<<"Berikut adalah list Peserta: "<<endl;
             showAllNamaPeserta(pesertaList);
             if (first(pesertaList) != nil){
-                cout<<"Masukkan nama Peserta: ";
-                cin>>inputNamaPeserta;
+                cout<<"Masukkan nama Peserta : ";getline(cin >> ws, inputNamaPeserta);
                 adrPeserta pesertaEvent = findPeserta(pesertaList,inputNamaPeserta);
                 if (pesertaEvent != nil){
                     joinEvent(events,pesertaEvent);
@@ -80,8 +132,7 @@ int main()
             {
                 cout<<">>>>>>>>>> TAMPILAN DATA PESERTA SUATU EVENT TERTENTU <<<<<<<<<<"<<endl;
                 string inputNamaEvent;
-                cout<<"Masukkan nama event yang akan ditampilkan data pesertanya: ";
-                cin>>inputNamaEvent;
+                cout<<"Masukkan nama event yang akan ditampilkan data pesertanya: ";getline(cin >> ws, inputNamaEvent);
                 E = findEvent(events,inputNamaEvent);
                 if (E == nil){
                     cout<<"Event tersebut tidak ada dalam listEvent!"<<endl;
@@ -114,10 +165,8 @@ int main()
                 adrEvent cariEvent;
                 adrPeserta cariPeserta;
                 string inputNamaPeserta, inputNamaEvent;
-                cout<<"Masukkan nama peserta : ";
-                cin>>inputNamaPeserta;
-                cout<<"Masukkan nama event: ";
-                cin>>inputNamaEvent;
+                cout<<"Masukkan nama peserta : ";getline(cin >> ws, inputNamaPeserta);
+                cout<<"Masukkan nama event   : ";getline(cin >> ws, inputNamaEvent);
                 cariEvent = findEvent(events,inputNamaEvent);
                 if (cariEvent != nil){
                     cariPeserta = findPeserta(peserta(cariEvent),inputNamaPeserta);
@@ -145,10 +194,8 @@ int main()
                 adrEvent cariEvent;
                 adrPeserta cariPeserta,dataHapus;
                 string inputNamaPeserta, inputNamaEvent,mau;
-                cout<<"Masukkan nama peserta : ";
-                cin>>inputNamaPeserta;
-                cout<<"Masukkan nama event: ";
-                cin>>inputNamaEvent;
+                cout<<"Masukkan nama peserta : ";getline(cin >> ws,inputNamaPeserta);
+                cout<<"Masukkan nama event   : ";getline(cin >> ws, inputNamaEvent);
                 cariEvent = findEvent(events,inputNamaEvent);
                 if (cariEvent != nil){
                     cariPeserta = findPeserta(peserta(cariEvent),inputNamaPeserta);
@@ -176,11 +223,10 @@ int main()
                 cout<<">>>>>>>>>> MENGHAPUS PESERTA DARI SEMUA EVENT ATAU SISTEM <<<<<<<<<<"<<endl;
                 string inputNamaPeserta;
                 adrPeserta hapus;
-                cout<<"Masukkan nama peserta yang akan dihapus dari semua event/sistem: ";
-                cin>>inputNamaPeserta;
+                cout<<"Masukkan nama peserta yang akan dihapus dari semua event/sistem  : ";getline(cin >> ws, inputNamaPeserta);
                 if (findPeserta(pesertaList,inputNamaPeserta) != nil){
-                    deletePeserta(pesertaList,inputNamaPeserta,hapus);
                     deletePesertaDiSemuaEvent(events,inputNamaPeserta);
+                    deletePeserta(pesertaList,inputNamaPeserta,hapus);
                     cout<<"Peserta "<<info(hapus).namaPeserta<<" sudah dihapus dari sistem"<<endl;
                 }else{
                     cout<<"Peserta tidak teregistrasi!"<<endl;
@@ -213,8 +259,7 @@ int main()
                 cout<<">>>>>>>>>> MENGHAPUS SUATU EVENT DARI SISTEM <<<<<<<<<<"<<endl;
                 string inputNamaEvent;
                 adrEvent hapus;
-                cout<<"Masukkan nama event yang mau dihapus: ";
-                cin>>inputNamaEvent;
+                cout<<"Masukkan nama event yang mau dihapus: ";getline(cin >> ws, inputNamaEvent);
                 if(findEvent(events,inputNamaEvent) != nil){
                     deleteEventMaster(events, inputNamaEvent,hapus);
                     cout<<info(hapus).namaEvent<<" sudah dihapus dari sistem"<<endl;
